@@ -12,7 +12,7 @@ function SearchBar() {
     // Fetch items from the server
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/items');
+        const response = await axios.get('https://lostandfound-backend-eupt.onrender.com/api/items');
         console.log('Fetched Items:', response.data); // Log the response
 
         // Access the items array from the response object
