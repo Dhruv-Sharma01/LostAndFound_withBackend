@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { PORT } from '../../../backend/server';
 function AddItemButton() {
   const currentUser = useSelector(state => state.currentUser);
   const userId = useSelector(state => state.userId);
@@ -37,7 +36,7 @@ function AddItemButton() {
     };
   
     try {
-      const response = await axios.post(`http://localhost:${PORT}/api/items`, payload, {
+      const response = await axios.post(`https://lostandfound-backend-eupt.onrender.com/api/items`, payload, {
         headers: {
           'Content-Type': 'application/json',
         },
