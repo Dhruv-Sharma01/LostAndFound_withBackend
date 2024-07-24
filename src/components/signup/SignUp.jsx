@@ -23,7 +23,7 @@ function SignUp() {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post('https://lostandfound-backend-eupt.onrender.com/api/register', {
         username,
         fullName,
         email,
