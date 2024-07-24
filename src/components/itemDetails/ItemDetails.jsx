@@ -10,7 +10,7 @@ function ItemDetails() {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/items`);
+        const res = await axios.get(`https://lostandfound-backend-eupt.onrender.com/api/items`);
         const items = res.data.items;
         const selectedItem = items.find((item) => item._id === id);
 
