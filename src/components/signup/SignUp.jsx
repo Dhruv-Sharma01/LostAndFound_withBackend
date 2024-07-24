@@ -51,6 +51,8 @@ function SignUp() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
       <h2 className="text-3xl font-bold mb-4">Sign Up</h2>
+      <form>
+      
       <input
         type="text"
         placeholder="Username"
@@ -90,6 +92,7 @@ function SignUp() {
         Sign Up
       </button>
       <p className="mt-4">{available}</p>
+        </form>
     </div>
   );
 }
