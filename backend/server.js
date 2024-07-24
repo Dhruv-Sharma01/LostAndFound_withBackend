@@ -17,7 +17,11 @@ const app = express();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://lostandfound-frontend.onrender.com', // Replace with your deployed frontend URL
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Enable this if you are dealing with cookies
+}));
 // Use user routes
 app.use("/api", userRoutes);
 app.use("/api", Itemroutes);
