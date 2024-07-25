@@ -1,7 +1,3 @@
-Here's a sample README for your Lost and Found web app project:
-
----
-
 # Lost and Found Web App
 
 Welcome to the Lost and Found web application, a platform where users can report lost items and search for found items, increasing the likelihood of reuniting them with their owners.
