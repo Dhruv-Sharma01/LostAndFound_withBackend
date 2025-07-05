@@ -27,6 +27,12 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  resetPasswordToken: {
+    type: String,
+  },
+  resetPasswordExpires: {
+    type: Date,
+  },
   uploadedItems: [{
     type: Schema.Types.ObjectId,
     ref: "Item" // Ensure the reference name matches your Item model
@@ -60,6 +66,22 @@ userSchema.methods.generateRefreshToken = function () {
   }, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "7d" // Default to 7 days if not specified
   });
+};
+
+// Method to generate password reset token
+userSchema.methods.generatePasswordResetToken = function () {
+  const crypto = require('crypto');
+
+  // Generate token
+  const resetToken = crypto.randomBytes(20).toString('hex');
+
+  // Hash token and set to resetPasswordToken field
+  this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+  // Set expire time (10 minutes)
+  this.resetPasswordExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
 };
 
 // Create and export the User model

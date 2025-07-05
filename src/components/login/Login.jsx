@@ -48,11 +48,18 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
             />
-            <button onClick={makeLogin} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            <button onClick={makeLogin} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-2">
                 Login {message}
             </button>
-            <Link to='/signup'><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2 focus:outline-none focus:shadow-outline">
-                No Account? SignUp 
+
+            <div className="text-center mb-2">
+                <Link to='/forgot-password' className="text-blue-500 hover:text-blue-700 text-sm">
+                    Forgot Password?
+                </Link>
+            </div>
+
+            <Link to='/signup'><button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                No Account? SignUp
             </button></Link>
             </form>
 

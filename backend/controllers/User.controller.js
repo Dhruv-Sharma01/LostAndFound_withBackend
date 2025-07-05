@@ -2,6 +2,8 @@
 import { User } from "../models/User.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
 
 // Register a new user
 export const registerUser = async (req, res) => {
@@ -110,6 +112,108 @@ export const updateUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating user:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+// Forgot password
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found with this email." });
+    }
+
+    // Generate reset token
+    const resetToken = user.generatePasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    // Create reset URL
+    const resetURL = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
+
+    // Email configuration
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USERNAME,
+      to: user.email,
+      subject: 'Password Reset Request - Lost and Found App',
+      html: `
+        <h2>Password Reset Request</h2>
+        <p>You have requested a password reset for your Lost and Found App account.</p>
+        <p>Please click the link below to reset your password:</p>
+        <a href="${resetURL}" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
+        <p>This link will expire in 10 minutes.</p>
+        <p>If you did not request this password reset, please ignore this email.</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({
+      message: "Password reset email sent successfully. Please check your email.",
+    });
+  } catch (error) {
+    console.error("Error in forgot password:", error);
+
+    // Reset the token fields if email sending fails
+    if (req.body.email) {
+      const user = await User.findOne({ email: req.body.email });
+      if (user) {
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+      }
+    }
+
+    res.status(500).json({ message: "Email could not be sent. Please try again later." });
+  }
+};
+
+// Reset password
+export const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    // Hash the token to compare with stored token
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    // Find user by token and check if token is not expired
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Token is invalid or has expired." });
+    }
+
+    // Validate password
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters long." });
+    }
+
+    // Set new password (will be hashed by pre-save hook)
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      message: "Password has been reset successfully. You can now login with your new password.",
+    });
+  } catch (error) {
+    console.error("Error in reset password:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 };
