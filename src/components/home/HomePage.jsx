@@ -10,13 +10,7 @@ function HomePage() {
           {/* Main Heading */}
           <div className="mb-8 animate-fade-in">
             <h1 className="text-5xl md:text-6xl font-heading font-bold text-gradient mb-6">
-               <a
-              href="https://github.com/Dhruv-Sharma01/LostAndFound_withBackend"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 flex items-center text-neutral-500 hover:text-black transition-colors"
-              aria-label="GitHub Repository"
-            >TrackItBack</a>
+             TrackItBack
             </h1>
             <p className="text-xl md:text-2xl text-neutral-600 mb-4 max-w-3xl mx-auto">
               Reuniting lost items with their owners through community collaboration
