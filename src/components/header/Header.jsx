@@ -15,10 +15,6 @@ function Header() {
     navigate("/");
   };
 
-  // Don't show header on home page if user is not logged in
-  if (!currentUser && location.pathname === '/') {
-    return null;
-  }
 
   return (
     <header className="bg-white shadow-soft border-b border-neutral-200 sticky top-0 z-50">
