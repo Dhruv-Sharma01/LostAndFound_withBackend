@@ -76,7 +76,6 @@ function SignUp() {
         fullName,
         email,
         password,
-        phoneno: phone
       });
 
       if (response.status === 201) {
