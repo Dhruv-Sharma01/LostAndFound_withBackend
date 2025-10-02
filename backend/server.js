@@ -6,11 +6,8 @@ import userRoutes from "./routes/User.routes.js";
 import Itemroutes from "./routes/Item.routes.js"
 import cors from "cors"
 // Load environment variables
-dotenv.config(
-    {
-        path:'./.env'
-    }
-);
+
+dotenv.config();
 
 // Create an Express app
 const app = express();
