@@ -54,7 +54,7 @@ userSchema.methods.generateAccessToken = function () {
     _id: this._id,
     email: this.email,
     fullName: this.fullName,
-  }, process.env.ACCESS_TOKEN_SECRET, {
+  }, process.env.example.ACCESS_TOKEN_SECRET, {
     expiresIn: process.env.ACCESS_TOKEN_EXPIRY || "15m" // Default to 15 minutes if not specified
   });
 };
@@ -63,7 +63,7 @@ userSchema.methods.generateAccessToken = function () {
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign({
     _id: this._id,
-  }, process.env.REFRESH_TOKEN_SECRET, {
+  }, process.env.example.REFRESH_TOKEN_SECRET, {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY || "7d" // Default to 7 days if not specified
   });
 };
