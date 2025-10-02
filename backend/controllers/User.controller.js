@@ -13,9 +13,10 @@ export const registerUser = async (req, res) => {
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log(existingUser);
       return res.status(400).json({ message: "Email already registered." });
     }
-
+    console.log("creating new user");
     // Create a new user
     const newUser = new User({
       username,
@@ -25,11 +26,12 @@ export const registerUser = async (req, res) => {
     });
 
     await newUser.save();
+    console.log("saved new user");
 
     // Generate tokens
     const accessToken = newUser.generateAccessToken();
     const refreshToken = newUser.generateRefreshToken();
-
+    console.log("generated tokens");
     // Return the newly created user with tokens
     res.status(201).json({
       user: {
